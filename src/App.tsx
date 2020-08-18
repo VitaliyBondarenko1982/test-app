@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Layout } from './Layout';
 import { CreateUser } from './commponents/CreateUser';
 import { Users } from './commponents/Users';
+import 'materialize-css';
 import './_App.scss';
 
 const App = () => (
