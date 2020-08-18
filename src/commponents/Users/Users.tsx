@@ -29,6 +29,7 @@ const UsersTemplate: FC<Props> = ({
         return (
           <User
             key={user.id}
+            id={user.id}
             name={user.name}
             surname={user.surname}
             desc={user.desc}

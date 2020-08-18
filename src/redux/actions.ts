@@ -33,6 +33,11 @@ export const setNewUserDesc = (desc: string) => ({
   desc,
 });
 
+export const createNewUser = (user: UserI) => ({
+  type: SET_NEW_USER_DESC,
+  user,
+});
+
 export const loadUsers = () => {
   return async (dispatch: Dispatch) => {
     dispatch(startLoading());
@@ -54,10 +59,24 @@ export const postNewUser = () => {
     dispatch(startLoading());
 
     try {
-      await axios.post('http://77.120.241.80:8911/api/users', newUser);
+      const response = await axios.post('http://77.120.241.80:8911/api/users', newUser);
+
       dispatch(setNewUserName(''));
       dispatch(setNewUserSurname(''));
       dispatch(setNewUserDesc(''));
+      createNewUser(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const deleteUser = (id: number) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.delete(`http://77.120.241.80:8911/api/user/${id}`);
+
+      dispatch(loadUsersSuccess(response.data));
     } catch (e) {
       console.log(e);
     }

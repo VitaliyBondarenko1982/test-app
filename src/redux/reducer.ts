@@ -67,11 +67,7 @@ export const reducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         users: [...state.users, action.user],
-        newUser: {
-          name: '',
-          surname: '',
-          desc: '',
-        },
+        loading: false,
       };
     default:
       return state;
