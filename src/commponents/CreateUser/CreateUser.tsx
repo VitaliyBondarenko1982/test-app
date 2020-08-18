@@ -1,10 +1,7 @@
 import React from 'react';
+import './_CreateUser.scss';
 
 export const CreateUser = () => {
-  // useEffect(() => {
-  //   window.M.updateTextFields();
-  // }, []);
-
   return (
     <div className="row">
       <div className="col s6 offset-s3">
