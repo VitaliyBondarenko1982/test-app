@@ -83,6 +83,7 @@ export const reducer = (state = initialState, action: AnyAction) => {
     case UPDATE_EDITED_USER:
       return {
         ...state,
+        loading: false,
         users: state.users.map((user: UserI) => {
           return user.id === action.user.id ? {
             ...action.user,
