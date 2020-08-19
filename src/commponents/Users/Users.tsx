@@ -49,7 +49,7 @@ const UsersTemplate: FC<Props> = ({
     }
 
     return pagesArray;
-  }, [pages]);
+  }, [amountOfPages]);
 
   const visibleUsers = useMemo(() => {
     const cutUsers = users.slice((currentPage - 1) * amountOnPage, currentPage * amountOnPage);

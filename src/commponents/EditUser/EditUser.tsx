@@ -36,7 +36,7 @@ const EditUserTemplate: FC<TotalProps> = ({
       setEditingUser('', 'desc');
       setEditingUserId(0);
     };
-  }, []);
+  }, [setEditingUser, setEditingUserId]);
   const onClickHandler = () => {
     setEditedUser(editUser.id);
   };
