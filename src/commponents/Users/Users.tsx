@@ -8,9 +8,11 @@ import { User } from '../User';
 import { loadUsers as loadUsersAction } from '../../redux/actions';
 import { State, UserI } from '../../utils/interfaces';
 import './_Users.scss';
+import { Loader } from '../UI/Loader';
 
 interface StateProps {
   users: UserI[];
+  loading: boolean;
 }
 
 interface DispatchProps {
@@ -22,6 +24,7 @@ type Props = StateProps & DispatchProps;
 const UsersTemplate: FC<Props> = ({
   loadUsers,
   users,
+  loading,
 }) => {
   const [currentPage, setCurrentage] = useState(2);
 
@@ -61,6 +64,7 @@ const UsersTemplate: FC<Props> = ({
 
   return (
     <>
+      { loading ? <Loader /> : null}
       <div className="row users">
         {visibleUsers.map((user) => {
           return (
@@ -109,6 +113,7 @@ const UsersTemplate: FC<Props> = ({
 
 const mapStateToProps = (state: State) => ({
   users: state.users,
+  loading: state.loading,
 });
 
 const mapDispatchToProps = {

@@ -1,11 +1,15 @@
-import React, { ChangeEvent, FC, FormEvent } from 'react';
+import React, {
+  ChangeEvent, FC, FormEvent, useState,
+} from 'react';
+import cx from 'classnames';
 import { Input } from '../UI/Input';
 import { UserI, NewUser } from '../../utils/interfaces';
 import './_Form.scss';
+import { Button } from '../UI/Button';
 
 interface Props {
   newUser: UserI | NewUser;
-  onClickHandler: (event: FormEvent) => void;
+  onClickHandler: () => void;
   onChangeHandler: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   title: string;
   buttonText: string;
@@ -18,6 +22,46 @@ export const Form: FC<Props> = ({
   title,
   buttonText,
 }) => {
+  const [nameIsValid, setNameIsValid] = useState(true);
+  const [surnameIsValid, setSurnameIsValid] = useState(true);
+  const [descIsValid, setDescIsValid] = useState(true);
+
+  const onClickWithValidation = (event: FormEvent) => {
+    event.preventDefault();
+
+    if (!newUser.name.length) {
+      setNameIsValid(false);
+
+      setInterval(() => {
+        setNameIsValid(true);
+      }, 2000);
+
+      return;
+    }
+
+    if (!newUser.surname.length) {
+      setSurnameIsValid(false);
+
+      setInterval(() => {
+        setSurnameIsValid(true);
+      }, 2000);
+
+      return;
+    }
+
+    if (!newUser.desc.length) {
+      setDescIsValid(false);
+
+      setInterval(() => {
+        setDescIsValid(true);
+      }, 2000);
+
+      return;
+    }
+
+    onClickHandler();
+  };
+
   return (
     <form className="col s6 offset-s3">
       <h2>{title}</h2>
@@ -31,6 +75,7 @@ export const Form: FC<Props> = ({
               placeholder="Enter name"
               value={newUser.name}
               onChange={onChangeHandler}
+              isValid={nameIsValid}
             />
             <Input
               label="Surname"
@@ -39,6 +84,7 @@ export const Form: FC<Props> = ({
               placeholder="Enter surname"
               value={newUser.surname}
               onChange={onChangeHandler}
+              isValid={surnameIsValid}
             />
             <div className="input-field">
               <textarea
@@ -50,18 +96,17 @@ export const Form: FC<Props> = ({
                 onChange={onChangeHandler}
               />
               <label htmlFor="desc">Description</label>
-              <span className="helper-text hidden">Helper text</span>
+              <span className={cx('helper-text', { hidden: descIsValid })}>Field description is required</span>
             </div>
           </div>
         </div>
         <div className="card-action">
-          <button
-            type="button"
+          <Button
+            onClick={onClickWithValidation}
             className="btn yellow darken-4"
-            onClick={onClickHandler}
           >
             {buttonText}
-          </button>
+          </Button>
         </div>
       </div>
     </form>

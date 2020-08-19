@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FC } from 'react';
+import cx from 'classnames';
 
 interface Props {
   label: string;
@@ -7,6 +8,7 @@ interface Props {
   placeholder: string;
   onChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   value: string;
+  isValid: boolean;
 }
 export const Input: FC<Props> = ({
   label,
@@ -15,6 +17,7 @@ export const Input: FC<Props> = ({
   placeholder,
   onChange,
   value,
+  isValid,
 }) => {
   return (
     <div className="input-field">
@@ -28,7 +31,7 @@ export const Input: FC<Props> = ({
         value={value}
       />
       <label htmlFor={id}>{label}</label>
-      <span className="helper-text hidden">Helper text</span>
+      <span className={cx('helper-text', { hidden: isValid })}>{`Field ${name} is required`}</span>
     </div>
   );
 };

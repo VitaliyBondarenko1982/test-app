@@ -33,3 +33,12 @@ textarea.yellow-input:focus {
   border-bottom: 1px solid #ffeb3b !important;
   box-shadow: 0 1px 0 0 #ffeb3b !important;
 }
+
+.input-field .helper-text {
+  color: #d81b60 !important;
+  transition: opacity 0.3s ease;
+
+  &.hidden {
+    opacity: 0;
+  }
+}

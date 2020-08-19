@@ -1,5 +1,5 @@
 import React, {
-  ChangeEvent, FC, FormEvent, useEffect,
+  ChangeEvent, FC, useEffect,
 } from 'react';
 import { connect } from 'react-redux';
 import { Form } from '../Form';
@@ -10,10 +10,6 @@ import {
   setEditingUserId as setEditingUserIdAction,
 } from '../../redux/actions';
 import './_EditUser.scss';
-
-// interface Props {
-//   onClick: () => void;
-// }
 
 interface StateProps {
   editUser: UserI;
@@ -41,9 +37,7 @@ const EditUserTemplate: FC<TotalProps> = ({
       setEditingUserId(0);
     };
   }, []);
-  const onClickHandler = (event: FormEvent) => {
-    event.preventDefault();
-
+  const onClickHandler = () => {
     setEditedUser(editUser.id);
   };
 

@@ -7,6 +7,7 @@ import {
   startEditing as startEditingAction,
 } from '../../redux/actions';
 import { State } from '../../utils/interfaces';
+import { Button } from '../UI/Button';
 
 interface Props {
   id: number;
@@ -22,9 +23,6 @@ interface StateProps {
 interface DispatchProps {
   deleteUser: (id: number) => void;
   startEditing: () => void;
-  // setNewUserName: (value: string) => void;
-  // setNewUserSurname: (value: string) => void;
-  // setNewUserDesc: (value: string) => void;
   setEditingUser: (value: string, name: string) => void;
   setEditingUserId: (id: number) => void;
 }
@@ -62,20 +60,18 @@ const UserTemplate: FC<Props & DispatchProps & StateProps> = ({
           </p>
         </div>
         <div className="card-action">
-          <button
-            type="button"
-            className="btn grey lighten-1 black-text"
+          <Button
             onClick={onEditClickHandler}
+            className="btn grey lighten-1 black-text"
           >
             Edit
-          </button>
-          <button
-            type="button"
-            className="btn yellow darken-4"
+          </Button>
+          <Button
             onClick={onRemoveClickHandler}
+            className="btn yellow darken-4"
           >
             Delete
-          </button>
+          </Button>
         </div>
       </div>
     </div>

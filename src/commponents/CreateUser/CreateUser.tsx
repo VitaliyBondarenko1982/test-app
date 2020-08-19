@@ -1,5 +1,5 @@
 import React, {
-  FC, ChangeEvent, FormEvent, useEffect,
+  FC, ChangeEvent, useEffect,
 } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -53,8 +53,7 @@ export const CreateUserTemplate: FC<Props> = ({
     }
   };
 
-  const onClickHandler = (event: FormEvent) => {
-    event.preventDefault();
+  const onClickHandler = () => {
     postNewUser();
     setTimeout(() => {
       history.push('/');
