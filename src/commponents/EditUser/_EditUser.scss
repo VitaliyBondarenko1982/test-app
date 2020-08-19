@@ -1,7 +1,9 @@
 .edit-user {
   position: absolute;
-  width: calc(100% - 40px);
+  width: 50%;
   top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   margin: auto;
   outline: none;
@@ -15,5 +17,17 @@
 
   & .card.blue.darken-1 {
     margin: 0;
+  }
+
+  &.row .col {
+    padding: 0;
+  }
+
+  &.row .col.s6 {
+    width: 100%;
+  }
+
+  &.row .col.offset-s3 {
+    margin-left: 0;
   }
 }

@@ -26,7 +26,7 @@ const UsersTemplate: FC<Props> = ({
   users,
   loading,
 }) => {
-  const [currentPage, setCurrentage] = useState(2);
+  const [currentPage, setCurrentage] = useState(1);
 
   useEffect(() => {
     loadUsers();
