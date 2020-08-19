@@ -1,6 +1,7 @@
 import React, {
   FC, useEffect, useState,
 } from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
@@ -26,7 +27,7 @@ const UsersTemplate: FC<Props> = ({
   users,
   loading,
 }) => {
-  const [currentPage, setCurrentage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     loadUsers();
@@ -47,7 +48,7 @@ const UsersTemplate: FC<Props> = ({
       return;
     }
 
-    setCurrentage(currentPage + 1);
+    setCurrentPage(currentPage + 1);
   };
 
   const onPrevPageClick = () => {
@@ -55,11 +56,11 @@ const UsersTemplate: FC<Props> = ({
       return;
     }
 
-    setCurrentage(currentPage - 1);
+    setCurrentPage(currentPage - 1);
   };
 
   const onPageClick = (page: number) => {
-    setCurrentage(page);
+    setCurrentPage(page);
   };
 
   return (
@@ -83,7 +84,7 @@ const UsersTemplate: FC<Props> = ({
           className={cx(currentPage === 1 ? 'disabled' : 'waves-effect')}
           onClick={onPrevPageClick}
         >
-          <a href="#!"><i className="material-icons">chevron_left</i></a>
+          <NavLink to={`/users/${currentPage + 1}`}><i className="material-icons">chevron_left</i></NavLink>
         </li>
         {pages.map(page => {
           return (
@@ -92,11 +93,11 @@ const UsersTemplate: FC<Props> = ({
               key={uuidv4()}
               onClick={() => onPageClick(page)}
             >
-              <a
-                href="#!"
+              <NavLink
+                to={`/users/${page}`}
               >
                 {page}
-              </a>
+              </NavLink>
             </li>
           );
         })}
@@ -104,7 +105,7 @@ const UsersTemplate: FC<Props> = ({
           className={cx(currentPage === amountOfPages ? 'disabled' : 'waves-effect')}
           onClick={onNextPageClick}
         >
-          <a href="#!"><i className="material-icons">chevron_right</i></a>
+          <NavLink to={`/users/${currentPage + 1}`}><i className="material-icons">chevron_right</i></NavLink>
         </li>
       </ul>
     </>
