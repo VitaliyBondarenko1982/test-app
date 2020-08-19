@@ -1,11 +1,11 @@
-import React, { FC, ChangeEvent, FormEvent } from 'react';
+import React, {
+  FC, ChangeEvent, FormEvent, useEffect,
+} from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { State, NewUser } from '../../utils/interfaces';
 import {
-  setNewUserDesc as setNewUserDescAction,
-  setNewUserSurname as setNewUserSurnameAction,
-  setNewUserName as setNewUserNameAction,
+  setNewUser as setNewUserAction,
   postNewUser as postNewUserAction,
 } from '../../redux/actions';
 import { Form } from '../Form';
@@ -15,35 +15,39 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  setNewUserName: (value: string) => void;
-  setNewUserSurname: (value: string) => void;
-  setNewUserDesc: (value: string) => void;
+  setNewUser: (value: string, name: string) => void;
   postNewUser: () => void;
 }
 
 type Props = StateProps & DispatchProps;
 
 export const CreateUserTemplate: FC<Props> = ({
-  setNewUserName,
-  setNewUserSurname,
-  setNewUserDesc,
+  setNewUser,
   newUser,
   postNewUser,
 }) => {
   const history = useHistory();
+
+  useEffect(() => {
+    return () => {
+      setNewUser('', 'name');
+      setNewUser('', 'surname');
+      setNewUser('', 'desc');
+    };
+  }, [setNewUser]);
 
   const onChangeHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const { value, name: nameControl } = event.target;
 
     switch (nameControl) {
       case 'name':
-        setNewUserName(value);
+        setNewUser(value, nameControl);
         break;
       case 'surname':
-        setNewUserSurname(value);
+        setNewUser(value, nameControl);
         break;
       case 'desc':
-        setNewUserDesc(value);
+        setNewUser(value, nameControl);
         break;
       default:
     }
@@ -75,9 +79,7 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-  setNewUserName: setNewUserNameAction,
-  setNewUserSurname: setNewUserSurnameAction,
-  setNewUserDesc: setNewUserDescAction,
+  setNewUser: setNewUserAction,
   postNewUser: postNewUserAction,
 };
 

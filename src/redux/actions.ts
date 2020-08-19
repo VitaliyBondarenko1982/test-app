@@ -3,14 +3,12 @@ import axios from 'axios';
 import {
   FINISH_EDITING,
   LOAD_USERS_SUCCESS,
-  SET_NEW_USER_DESC,
-  SET_NEW_USER_NAME,
-  SET_NEW_USER_SURNAME,
+  SET_NEW_USER,
   START_EDITING,
   START_LOADING,
   SET_EDITING_USER_ID,
   SET_EDITING_USER,
-  UPDATE_EDITED_USER,
+  UPDATE_EDITED_USER, CREATE_NEW_USER,
 } from './actionTypes';
 import { State, UserI } from '../utils/interfaces';
 
@@ -23,24 +21,15 @@ export const loadUsersSuccess = (users: UserI[]) => ({
   users,
 });
 
-export const setNewUserName = (name: string) => ({
-  type: SET_NEW_USER_NAME,
-  name,
-});
-
-export const setNewUserSurname = (surname: string) => ({
-  type: SET_NEW_USER_SURNAME,
-  surname,
-});
-
-export const setNewUserDesc = (desc: string) => ({
-  type: SET_NEW_USER_DESC,
-  desc,
-});
-
 export const createNewUser = (user: UserI) => ({
-  type: SET_NEW_USER_DESC,
+  type: CREATE_NEW_USER,
   user,
+});
+
+export const setNewUser = (value: string, name: string) => ({
+  type: SET_NEW_USER,
+  value,
+  name,
 });
 
 export const startEditing = () => ({
@@ -91,9 +80,9 @@ export const postNewUser = () => {
       const response = await axios.post('http://77.120.241.80:8911/api/users', newUser);
 
       dispatch(createNewUser(response.data));
-      dispatch(setNewUserName(''));
-      dispatch(setNewUserSurname(''));
-      dispatch(setNewUserDesc(''));
+      dispatch(setNewUser('', 'name'));
+      dispatch(setNewUser('', 'surname'));
+      dispatch(setNewUser('', 'desc'));
     } catch (e) {
       console.log(e);
     }

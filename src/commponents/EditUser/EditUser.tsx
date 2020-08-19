@@ -1,12 +1,19 @@
-import React, { ChangeEvent, FC, FormEvent } from 'react';
+import React, {
+  ChangeEvent, FC, FormEvent, useEffect,
+} from 'react';
 import { connect } from 'react-redux';
 import { Form } from '../Form';
 import { State, UserI } from '../../utils/interfaces';
 import {
   setEditingUser as setEditingUserAction,
   setEditedUser as setEditedUserAction,
+  setEditingUserId as setEditingUserIdAction,
 } from '../../redux/actions';
 import './_EditUser.scss';
+
+// interface Props {
+//   onClick: () => void;
+// }
 
 interface StateProps {
   editUser: UserI;
@@ -15,15 +22,25 @@ interface StateProps {
 interface DispatchProps {
   setEditingUser: (value: string, name: string) => void;
   setEditedUser: (id: number) => void;
+  setEditingUserId: (id: number) => void;
 }
 
-type Props = StateProps & DispatchProps;
+type TotalProps = StateProps & DispatchProps;
 
-const EditUserTemplate: FC<Props> = ({
+const EditUserTemplate: FC<TotalProps> = ({
   editUser,
   setEditingUser,
   setEditedUser,
+  setEditingUserId,
 }) => {
+  useEffect(() => {
+    return () => {
+      setEditingUser('', 'name');
+      setEditingUser('', 'surname');
+      setEditingUser('', 'desc');
+      setEditingUserId(0);
+    };
+  }, []);
   const onClickHandler = (event: FormEvent) => {
     event.preventDefault();
 
@@ -48,7 +65,9 @@ const EditUserTemplate: FC<Props> = ({
   };
 
   return (
-    <div className="row edit-user">
+    <div
+      className="row edit-user"
+    >
       <Form
         newUser={editUser}
         onClickHandler={onClickHandler}
@@ -67,6 +86,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = {
   setEditingUser: setEditingUserAction,
   setEditedUser: setEditedUserAction,
+  setEditingUserId: setEditingUserIdAction,
 };
 
 export const EditUser = connect(mapStateToProps, mapDispatchToProps)(EditUserTemplate);

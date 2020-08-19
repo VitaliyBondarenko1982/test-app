@@ -4,9 +4,7 @@ import {
   LOAD_USERS_SUCCESS,
   SET_EDITING_USER,
   SET_EDITING_USER_ID,
-  SET_NEW_USER_DESC, SET_NEW_USER_ID,
-  SET_NEW_USER_NAME,
-  SET_NEW_USER_SURNAME,
+  SET_NEW_USER,
   START_EDITING,
   START_LOADING, UPDATE_EDITED_USER,
 } from './actionTypes';
@@ -52,36 +50,12 @@ export const reducer = (state = initialState, action: AnyAction) => {
         ...state,
         editing: false,
       };
-    case SET_NEW_USER_NAME:
+    case SET_NEW_USER:
       return {
         ...state,
         newUser: {
           ...state.newUser,
-          name: action.name,
-        },
-      };
-    case SET_NEW_USER_SURNAME:
-      return {
-        ...state,
-        newUser: {
-          ...state.newUser,
-          surname: action.surname,
-        },
-      };
-    case SET_NEW_USER_DESC:
-      return {
-        ...state,
-        newUser: {
-          ...state.newUser,
-          desc: action.desc,
-        },
-      };
-    case SET_NEW_USER_ID:
-      return {
-        ...state,
-        newUser: {
-          ...state.newUser,
-          id: action.id,
+          [action.name]: action.value,
         },
       };
     case CREATE_NEW_USER:

@@ -2,21 +2,44 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { NavBar } from '../commponents/NavBar';
 import { State } from '../utils/interfaces';
-import './_Layout.scss';
 import { EditUser } from '../commponents/EditUser';
+import { finishEditing as finishEditingAction } from '../redux/actions';
+import './_Layout.scss';
 
 interface StateProps {
   editing: boolean;
 }
 
-const LayoutTemplate: FC<StateProps> = ({ children, editing }) => {
+interface DispatchProps {
+  finishEditing: () => void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const LayoutTemplate: FC<Props> = ({
+  children,
+  editing,
+  finishEditing,
+}) => {
+  const onClickHandler = () => {
+    finishEditing();
+  };
+
   return (
     <div className="layout">
       <NavBar />
       <div className="main">
         {children}
         {editing ? <EditUser /> : null}
-        {editing ? <div className="overlay" /> : null}
+        {editing
+          ? (
+            <div
+              className="overlay"
+              role="menu"
+              tabIndex={0}
+              onClick={onClickHandler}
+            />
+          ) : null}
       </div>
     </div>
   );
@@ -26,4 +49,8 @@ const mapStateToProps = (state: State) => ({
   editing: state.editing,
 });
 
-export const Layout = connect(mapStateToProps, null)(LayoutTemplate);
+const mapDispatchToProps = {
+  finishEditing: finishEditingAction,
+};
+
+export const Layout = connect(mapStateToProps, mapDispatchToProps)(LayoutTemplate);
