@@ -1,8 +1,11 @@
-export interface UserI {
-  id: number;
+export interface NewUser {
   name: string;
   surname: string;
   desc: string;
+}
+
+export interface UserI extends NewUser{
+  id: number;
 }
 
 export interface State {
@@ -11,25 +14,4 @@ export interface State {
   editing: false;
   newUser: NewUser;
   editUser: UserI;
-}
-
-export interface NewUser {
-  name: string;
-  surname: string;
-  desc: string;
-}
-
-export interface Control {
-  value: string;
-  label: string;
-  name: string;
-  errorMessage: string;
-  valid: boolean;
-  touched: boolean;
-  validation?: Validation;
-}
-
-export interface Validation {
-  required: boolean;
-  minLength?: number;
 }

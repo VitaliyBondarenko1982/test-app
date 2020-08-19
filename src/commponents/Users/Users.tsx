@@ -1,5 +1,5 @@
 import React, {
-  FC, useEffect, useState,
+  FC, useEffect, useMemo, useState,
 } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -33,15 +33,33 @@ const UsersTemplate: FC<Props> = ({
     loadUsers();
   }, [loadUsers]);
 
-  const pages = [];
-  const amountOfPages = Math.ceil(users.length / 5);
   const amountOnPage = 5;
 
-  for (let i = 1; i <= amountOfPages; i += 1) {
-    pages.push(i);
-  }
+  const amountOfPages = useMemo(() => {
+    return Math.ceil(users.length / 5);
+  }, [users]);
 
-  const visibleUsers = users.slice((currentPage - 1) * amountOnPage, currentPage * amountOnPage);
+  let pages: number[] = [];
+
+  pages = useMemo(() => {
+    const pagesArray = [];
+
+    for (let i = 1; i <= amountOfPages; i += 1) {
+      pagesArray.push(i);
+    }
+
+    return pagesArray;
+  }, [pages]);
+
+  const visibleUsers = useMemo(() => {
+    const cutUsers = users.slice((currentPage - 1) * amountOnPage, currentPage * amountOnPage);
+
+    if (!cutUsers.length && currentPage !== 1) {
+      setCurrentPage(currentPage - 1);
+    }
+
+    return cutUsers;
+  }, [users, currentPage, amountOnPage]);
 
   const onNextPageClick = () => {
     if (currentPage === amountOfPages) {
@@ -63,6 +81,10 @@ const UsersTemplate: FC<Props> = ({
     setCurrentPage(page);
   };
 
+  if (!visibleUsers.length) {
+    return <h1>No users. Create new user!</h1>;
+  }
+
   return (
     <>
       { loading ? <Loader /> : null}
@@ -79,35 +101,38 @@ const UsersTemplate: FC<Props> = ({
           );
         })}
       </div>
-      <ul className="pagination">
-        <li
-          className={cx(currentPage === 1 ? 'disabled' : 'waves-effect')}
-          onClick={onPrevPageClick}
-        >
-          <NavLink to={`/users/${currentPage + 1}`}><i className="material-icons">chevron_left</i></NavLink>
-        </li>
-        {pages.map(page => {
-          return (
-            <li
-              className={cx(currentPage === page ? 'active' : 'waves-effect')}
-              key={uuidv4()}
-              onClick={() => onPageClick(page)}
-            >
-              <NavLink
-                to={`/users/${page}`}
+      {users.length > 5 ? (
+        <ul className="pagination">
+          <li
+            className={cx(currentPage === 1 ? 'disabled' : 'waves-effect')}
+            onClick={onPrevPageClick}
+          >
+            <NavLink to={`/users/${currentPage + 1}`}><i className="material-icons">chevron_left</i></NavLink>
+          </li>
+          {pages.map(page => {
+            return (
+              <li
+                className={cx(currentPage === page ? 'active' : 'waves-effect')}
+                key={uuidv4()}
+                onClick={() => onPageClick(page)}
               >
-                {page}
-              </NavLink>
-            </li>
-          );
-        })}
-        <li
-          className={cx(currentPage === amountOfPages ? 'disabled' : 'waves-effect')}
-          onClick={onNextPageClick}
-        >
-          <NavLink to={`/users/${currentPage + 1}`}><i className="material-icons">chevron_right</i></NavLink>
-        </li>
-      </ul>
+                <NavLink
+                  to={`/users/${page}`}
+                >
+                  {page}
+                </NavLink>
+              </li>
+            );
+          })}
+          <li
+            className={cx(currentPage === amountOfPages ? 'disabled' : 'waves-effect')}
+            onClick={onNextPageClick}
+          >
+            <NavLink to={`/users/${currentPage + 1}`}><i className="material-icons">chevron_right</i></NavLink>
+          </li>
+        </ul>
+      ) : null}
+
     </>
   );
 };
