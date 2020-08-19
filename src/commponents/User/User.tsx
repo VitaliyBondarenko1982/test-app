@@ -1,6 +1,12 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { deleteUser as deleteUserAction } from '../../redux/actions';
+import {
+  deleteUser as deleteUserAction,
+  setEditingUser as setEditingUserAction,
+  setEditingUserId as setEditingUserIdAction,
+  startEditing as startEditingAction,
+} from '../../redux/actions';
+import { State } from '../../utils/interfaces';
 
 interface Props {
   id: number;
@@ -9,19 +15,40 @@ interface Props {
   desc: string;
 }
 
-interface DispatchProps {
-  deleteUser: (id: number) => void;
+interface StateProps {
+  editing: boolean;
 }
 
-const UserTemplate: FC<Props & DispatchProps> = ({
+interface DispatchProps {
+  deleteUser: (id: number) => void;
+  startEditing: () => void;
+  // setNewUserName: (value: string) => void;
+  // setNewUserSurname: (value: string) => void;
+  // setNewUserDesc: (value: string) => void;
+  setEditingUser: (value: string, name: string) => void;
+  setEditingUserId: (id: number) => void;
+}
+
+const UserTemplate: FC<Props & DispatchProps & StateProps> = ({
   name,
   surname,
   desc,
   id,
   deleteUser,
+  startEditing,
+  setEditingUser,
+  setEditingUserId,
 }) => {
-  const onClickHandler = () => {
+  const onRemoveClickHandler = () => {
     deleteUser(id);
+  };
+
+  const onEditClickHandler = () => {
+    startEditing();
+    setEditingUserId(id);
+    setEditingUser(name, 'name');
+    setEditingUser(surname, 'surname');
+    setEditingUser(desc, 'desc');
   };
 
   return (
@@ -38,13 +65,14 @@ const UserTemplate: FC<Props & DispatchProps> = ({
           <button
             type="button"
             className="btn grey lighten-1 black-text"
+            onClick={onEditClickHandler}
           >
             Edit
           </button>
           <button
             type="button"
             className="btn yellow darken-4"
-            onClick={onClickHandler}
+            onClick={onRemoveClickHandler}
           >
             Delete
           </button>
@@ -54,8 +82,15 @@ const UserTemplate: FC<Props & DispatchProps> = ({
   );
 };
 
+const mapStateToProps = (state: State) => ({
+  editing: state.editing,
+});
+
 const mapDispatchToProps = {
   deleteUser: deleteUserAction,
+  startEditing: startEditingAction,
+  setEditingUser: setEditingUserAction,
+  setEditingUserId: setEditingUserIdAction,
 };
 
-export const User = connect(null, mapDispatchToProps)(UserTemplate);
+export const User = connect(mapStateToProps, mapDispatchToProps)(UserTemplate);

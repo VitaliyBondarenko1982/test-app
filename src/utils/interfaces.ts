@@ -8,7 +8,9 @@ export interface UserI {
 export interface State {
   users: UserI[];
   loading: boolean;
+  editing: false;
   newUser: NewUser;
+  editUser: UserI;
 }
 
 export interface NewUser {
